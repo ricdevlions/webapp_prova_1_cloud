@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Artist {
+  id       String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email    String    @unique
+  name     String
+  releases Release[]
+}
+
+model Release {
+  id       String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title    String
+  genre    String
+  label    Boolean   @default(false)
+  artist   Artist    @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  artistId String    @db.Uuid
+  pieces   Piece[]   
+
+  // @@id([orderId, productId], map:"orderitems_orderId_productId_pk")
+}
+
+model Piece {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title     String
+  genre     String
+  duration  Int
+  release   Release   @relation(fields: [releaseId], references: [id], onDelete: Cascade) 
+  releaseId String    @db.Uuid
+}

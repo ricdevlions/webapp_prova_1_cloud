@@ -1,0 +1,24 @@
+avviare l'app:                      
+-   npm run dev
+
+ogni volta che si aggiorna schema.prisma:
+-   npx prisma generate
+-   npx prisma migrate dev --name <NUOVO_NOME>
+
+
+PER FARE IL SEED:
+
+- importare sample_data.js in seed.ts (importarlo come se fosse un file javascript)
+- aggiungere a tsconfig.json 
+                                "ts-node": {
+                                    "esm": true,
+                                    "experimentalResolver": true
+                                }
+    al fondo
+
+- lanciare il seguente comando:
+    (base) PS C:\Users\aless\OneDrive\Documenti\NEBULA\WEB\webapp_prova_1> node --loader ts-node/esm db/seed.ts
+
+installare gli adapter per costuire server actions che interagiscano con DB:
+-   npm i @neondatabase/serverless @prisma/adapter-neon ws
+-   npm i -D @types/ws bufferutil

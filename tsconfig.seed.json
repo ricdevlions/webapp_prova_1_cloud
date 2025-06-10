@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "noEmit": false
+  },
+  "include": ["db/**/*.ts"],
+  "ts-node": {
+    "esm": true,
+    "experimentalResolver": true
+  }
+}
