@@ -1,9 +1,28 @@
 steps:
-name: 'gcr.io/cloud-builders/npm'
-args: ['install']
-steps:\n  - name: 'gcr.io/cloud-builders/npm'\n    args: ['install']\n  - name: 'gcr.io/cloud-builders/npm'\n    args: ['run', 'build']
-steps:
+  # Installa le dipendenze
   - name: 'gcr.io/cloud-builders/npm'
     args: ['install']
+  # Esegue il build
   - name: 'gcr.io/cloud-builders/npm'
     args: ['run', 'build']
+  # Crea l'immagine Docker usando Buildpacks
+  - name: 'gcr.io/k8s-skaffold/pack'
+    args:
+      - 'build'
+      - '--builder=gcr.io/buildpacks/builder:v1'
+      - '--publish=europe-west12-docker.pkg.dev/nextjs-app-462604/cloud-run-source-deploy/webapp_prova_1_cloud/webapp-prova-1-cloud:$COMMIT_SHA'
+    env:
+      - 'GOOGLE_RUNTIME=nodejs'
+      - 'GOOGLE_NODE_RUN_SCRIPTS=build'
+  # Deploy su Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'webapp-prova-1-cloud'
+      - '--image=europe-west12-docker.pkg.dev/nextjs-app-462604/cloud-run-source-deploy/webapp_prova_1_cloud/webapp-prova-1-cloud:$COMMIT_SHA'
+      - '--region=europe-west12'
+      - '--platform=managed'
+      - '--allow-unauthenticated'
+options:
+  logging: CLOUD_LOGGING_ONLY
