@@ -31,4 +31,4 @@ jobs:
             --allow-unauthenticated \
             --set-env-vars=DATABASE_URL=${{ secrets.DATABASE_URL }} \
             --service-account=cloudbuild-sa@nextjs-app-462604.iam.gserviceaccount.com
-            
+      
